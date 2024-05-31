@@ -19,12 +19,16 @@ func main() {
 	myWindow := myApp.NewWindow("ProgressBar and Toolbar Widget")
 	myWindow.Resize(fyne.NewSize(200, 100))
 
+	DEFAULT_HOURS := 0
+	DEFAULT_MINUTES := 20
+	DEFAULT_SECONDS := 0
+
 	hourData := binding.NewInt()
-	hourData.Set(0)
+	hourData.Set(DEFAULT_HOURS)
 	minuteData := binding.NewInt()
-	minuteData.Set(0)
+	minuteData.Set(DEFAULT_MINUTES)
 	secondData := binding.NewInt()
-	secondData.Set(0)
+	secondData.Set(DEFAULT_SECONDS)
 	hourLbl := binding.IntToStringWithFormat(hourData, "%02d")
 	minuteLbl := binding.IntToStringWithFormat(minuteData, "%02d")
 	secondLbl := binding.IntToStringWithFormat(secondData, "%02d")
@@ -39,7 +43,7 @@ func main() {
 	)
 	progress := widget.NewProgressBar()
 	progress.Min = 0.0
-	progress.Max = 1200.0
+	progress.Max = float64((DEFAULT_HOURS * 3600) + (DEFAULT_MINUTES * 60) + DEFAULT_SECONDS)
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.DocumentCreateIcon(), func() {
 			log.Println("Edit Time: needs implimented")
@@ -69,20 +73,24 @@ func main() {
 				panic(err)
 			}
 
-			if s >= 59 {
-				secondData.Set(0)
-				err := beeep.Notify("Drink Reminder", "Make sure to have a sippy", "")
-				if err != nil {
-					panic(err)
-				}
-				if m >= 59 {
-					minuteData.Set(0)
-					hourData.Set(h + 1)
+			if s == 0 {
+				if m == 0 {
+					if h == 0 {
+						err := beeep.Notify("Drink Reminder", "Make sure to have a sippy", "")
+						if err != nil {
+							panic(err)
+						}
+					} else {
+						hourData.Set(h - 1)
+						minuteData.Set(59)
+						secondData.Set(59)
+					}
 				} else {
-					minuteData.Set(m + 1)
+					minuteData.Set(m - 1)
+					secondData.Set(59)
 				}
 			} else {
-				secondData.Set(s + 1)
+				secondData.Set(s - 1)
 			}
 
 		}
