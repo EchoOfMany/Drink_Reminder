@@ -7,8 +7,9 @@ for my reference use: `go build -ldflags -H=windowsgui` to build so that the cmd
 ### TO DO
 
 - [x] restart timer on completion
-- [ ] add manual start/stop
+- [ ] add manual start/stop ( possibly pause )
 - [ ] allow time to be edited in app
+- [ ] refactor so its not a mess
 
 ### Known issue
 
