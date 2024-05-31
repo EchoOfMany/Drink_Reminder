@@ -20,8 +20,9 @@ func main() {
 	myWindow.Resize(fyne.NewSize(200, 100))
 
 	DEFAULT_HOURS := 0
-	DEFAULT_MINUTES := 20
+	DEFAULT_MINUTES := 2
 	DEFAULT_SECONDS := 0
+	running := true
 
 	hourData := binding.NewInt()
 	hourData.Set(DEFAULT_HOURS)
@@ -42,8 +43,9 @@ func main() {
 		widget.NewLabel(" "),
 	)
 	progress := widget.NewProgressBar()
+	progress.TextFormatter = func() string { return " " }
 	progress.Min = 0.0
-	progress.Max = float64((DEFAULT_HOURS * 3600) + (DEFAULT_MINUTES * 60) + DEFAULT_SECONDS)
+	progress.Max = float64(((DEFAULT_HOURS * 3600) + (DEFAULT_MINUTES * 60) + DEFAULT_SECONDS) + 1)
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.DocumentCreateIcon(), func() {
 			log.Println("Edit Time: needs implimented")
@@ -57,9 +59,9 @@ func main() {
 	)
 
 	go func() {
-		for i := 0.0; i <= progress.Max; i += 1.0 {
+		for i := 0; i <= int(progress.Max); i += 1 {
 			time.Sleep(time.Second * 1)
-			progress.SetValue(i)
+			progress.SetValue(float64(i + 1))
 			h, err := hourData.Get()
 			if err != nil {
 				panic(err)
@@ -92,7 +94,13 @@ func main() {
 			} else {
 				secondData.Set(s - 1)
 			}
-
+			if i == int(progress.Max) && running {
+				i = 0
+				hourData.Set(DEFAULT_HOURS)
+				minuteData.Set(DEFAULT_MINUTES)
+				secondData.Set(DEFAULT_SECONDS)
+				progress.SetValue(progress.Min)
+			}
 		}
 	}()
 
