@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -16,11 +17,11 @@ import (
 
 func main() {
 	myApp := app.New()
-	myWindow := myApp.NewWindow("ProgressBar and Toolbar Widget")
+	myWindow := myApp.NewWindow("Drink Reminder")
 	myWindow.Resize(fyne.NewSize(200, 100))
 
 	DEFAULT_HOURS := 0
-	DEFAULT_MINUTES := 20
+	DEFAULT_MINUTES := 1
 	DEFAULT_SECONDS := 0
 	running := true
 
@@ -78,7 +79,7 @@ func main() {
 			if s == 0 {
 				if m == 0 {
 					if h == 0 {
-						err := beeep.Notify("Drink Reminder", "Make sure to have a sippy", "")
+						err := beeep.Notify("Drink Reminder", RandomMessage(), "drink.png")
 						if err != nil {
 							panic(err)
 						}
@@ -108,4 +109,20 @@ func main() {
 
 	myWindow.SetContent(content)
 	myWindow.ShowAndRun()
+}
+
+func RandomMessage() string {
+	messages := []string{
+		"Make sure to have a sippy",
+		"Sippy Break",
+		"Hydration Required",
+		"Drink some water you beautiful and capable but dehydrated bitch",
+		"Drink up Buttercup!",
+		"Remember: It is possible to be a multifaceted woman. Read books + twerk. Be Spiritual + a freak",
+		"Note to self: you good, you poppin'",
+		"I don't know take a drink or something",
+	}
+
+	index := rand.Int() % len(messages)
+	return messages[index]
 }
