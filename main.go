@@ -21,7 +21,7 @@ func main() {
 	myWindow.Resize(fyne.NewSize(200, 100))
 
 	DEFAULT_HOURS := 0
-	DEFAULT_MINUTES := 1
+	DEFAULT_MINUTES := 20
 	DEFAULT_SECONDS := 0
 	running := true
 

@@ -2,7 +2,8 @@
 
 Just small desktop project to practice Golang and create something to help the better half drink enough
 
-for my reference use: `go build -ldflags -H=windowsgui` to build so that the cmd does show when the exe is run
+**NOT USED** for my reference use: `go build -ldflags -H=windowsgui` to build so that the cmd does show when the exe is run
+use `fyne package -os windows -icon drink.png` to build. Does the above and adds program icon
 
 ### TO DO
 
